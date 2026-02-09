@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Be My Valentine 💖</title>
+
+<style>
+body {
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  font-family:Arial, sans-serif;
+  overflow:hidden;
+  text-align:center;
+}
+
+.box {
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+  position:relative;
+  width:320px;
+}
+img{
+  border-radius: 50%;
+width: 150px;
+}
+h1 { color:#e91e63; margin:10px 0; }
+
+button {
+  padding:12px 25px;
+  font-size:18px;
+  font-weight:600;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+align-self: anchor-center;
+  margin:10px;
+  transition:transform .2s ease;
+}
+
+#yesBtn { background:#4CAF50; color:white; }
+#noBtn  { background:#f44336; color:white; position:absolute; left:140px; top:180px; }
+
+.message { font-size:22px; margin-top:20px; color:#e91e63; }
+
+.heart {
+  position:fixed;
+  bottom:-20px;
+  animation:floatUp 6s linear forwards;
+  pointer-events:none;
+}
+@keyframes floatUp {
+  to { transform:translateY(-110vh) rotate(360deg); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+<div class="box" id="box">
+<img src="C:\Users\parek\Downloads\priya.jpg" alt="Avatar">
+  <div id="introText">
+  <h1>Priya, Will you be my Valentine? 💕</h1>
+  </div>
+</br>
+<div>
+  <!-- Buttons First -->
+  <button id="yesBtn">Yes 💖</button>
+  <button id="noBtn">No 😢</button>
+</div>
+  <!-- Celebration Content (hidden at start) -->
+  <div id="celebration" style="display:none;">
+    <h1>YAYYY!! Best Decision ever 💕🥰</h1>
+    <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+         style="width:220px; margin-top:20px; border-radius:15px;">
+    <p style="font-size:15px; color:#e91e63; margin-top:10px;">
+      You just made my world 100x happier💖<br>
+      <p style="font-size:20px; color:#e91e63; margin-top:10px;">
+I choose you today. I'll choose you tomorrow and I'll keep choosing<br> you - Always.😌✨<br>
+      </p>
+     <strong> Happy Valentines Day💘</strong>
+    </p>
+  </div>
+
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+const question = document.getElementById("question");
+const box = document.getElementById("box");
+const introText = document.getElementById("introText");
+
+
+/* YES GROWS */
+let yesScale = 1;
+setInterval(() => {
+  yesScale += 0.05;
+  yesBtn.style.transform = `scale(${yesScale})`;
+}, 2000);
+
+/* NO TEXT CHANGER */
+const noTexts = [
+  "No 😢",
+  "Are you sure? 🥺",
+  "Think again 💔",
+  "Don’t do this 😭",
+  "Last chance 😳",
+  "You can’t escape 😂"
+];
+let noIndex = 0;
+
+/* MOVE NO BUTTON */
+function moveButton() {
+  const padding = 20; // keeps it slightly inside screen edges
+
+  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+  const newX = Math.random() * maxX;
+  const newY = Math.random() * maxY;
+
+  noBtn.style.position = "fixed";   // important → allows screen movement
+  noBtn.style.left = newX + "px";
+  noBtn.style.top = newY + "px";
+
+  // Change text each escape
+  noIndex = (noIndex + 1) % noTexts.length;
+  noBtn.textContent = noTexts[noIndex];
+}
+
+noBtn.addEventListener("mouseover", moveButton);
+box.addEventListener("touchstart", moveButton);
+
+/* HEARTS */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random()*window.innerWidth + "px";
+  heart.style.fontSize = (Math.random()*20+15)+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,800);
+
+/* CONFETTI */
+function confettiBlast() {
+  for(let i=0;i<70;i++){
+    const c=document.createElement("div");
+    c.style.position="fixed";
+    c.style.width="8px";
+    c.style.height="8px";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.left=window.innerWidth/2+"px";
+    c.style.top=window.innerHeight/2+"px";
+    c.style.borderRadius="50%";
+    c.style.pointerEvents="none";
+    c.style.transition="all 1s ease-out";
+    document.body.appendChild(c);
+
+    setTimeout(()=>{
+      c.style.left=Math.random()*window.innerWidth+"px";
+      c.style.top=Math.random()*window.innerHeight+"px";
+      c.style.opacity=0;
+    },10);
+
+    setTimeout(()=>c.remove(),1000);
+  }
+}
+
+/* YES CLICK */
+const celebration = document.getElementById("celebration");
+
+yesBtn.addEventListener("click", () => {
+  confettiBlast();
+
+  introText.style.display = "none";   // ❌ hide question text
+  yesBtn.style.display = "none";
+  noBtn.style.display = "none";
+
+  celebration.style.display = "block"; // 🎉 show celebration
+});
+</script>
+
+</body>
+</html>
